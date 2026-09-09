@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowRight, Check, Code2, Gauge, LayoutTemplate, Search, Smartphone, Workflow } from 'lucide-react';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {title:'Website Design Services & Pricing',description:'Professional website design, ecommerce, integrations, and ongoing optimization with clear project pricing.'};
+export const metadata: Metadata = pageMetadata('Website Design Services & Pricing', 'Professional website design, ecommerce, integrations, and ongoing optimization with clear project pricing.', '/website-design');
 const services=[[LayoutTemplate,'Strategy & UX','A clear site structure and conversion path shaped around your audience and business goals.'],[Smartphone,'Responsive design','A polished experience across desktop, tablet, and mobile—built for accessibility and ease of use.'],[Code2,'Custom development','Fast, maintainable implementation without locking your business into a rigid template.'],[Search,'Search foundations','Technical SEO, metadata, page structure, and analytics readiness included from launch.'],[Workflow,'Business integrations','Connect forms, CRM, scheduling, ecommerce, payments, automation, and internal systems.'],[Gauge,'Performance & care','Performance tuning, launch support, and ongoing improvements as your business grows.']] as const;
 const serviceImages=[
   {src:'/website-design/strategy-ux.webp',alt:'Designer arranging website wireframes and a customer journey'},

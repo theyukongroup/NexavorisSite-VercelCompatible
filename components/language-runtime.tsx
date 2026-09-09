@@ -4,17 +4,23 @@ import { useEffect, useState } from 'react';
 import {
   isLocale,
   languageTags,
+  loadMessages,
   localeLabels,
   locales,
   translate,
   type Locale,
 } from '@/lib/i18n';
+import { SITE_URL } from '@/lib/seo';
 const textSources = new WeakMap<Text, string>();
 const attributeSources = new WeakMap<Element, Map<string, string>>();
 const translatedAttributes = ['alt', 'aria-label', 'placeholder', 'title'];
 let originalTitle = '';
 let originalDescription = '';
-function translateTree(locale: Locale, root: Node = document.body) {
+function translateTree(
+  locale: Locale,
+  messages: Record<string, string>,
+  root: Node = document.body,
+) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node: Text | null;
   while ((node = walker.nextNode() as Text | null)) {
@@ -24,7 +30,7 @@ function translateTree(locale: Locale, root: Node = document.body) {
     textSources.set(node, source);
     const trimmed = source.trim();
     if (trimmed)
-      node.nodeValue = source.replace(trimmed, translate(locale, trimmed));
+      node.nodeValue = source.replace(trimmed, translate(messages, trimmed));
   }
   const elements =
     root instanceof Element
@@ -41,7 +47,7 @@ function translateTree(locale: Locale, root: Node = document.body) {
       if (!current) continue;
       const source = sources.get(attribute) ?? current;
       sources.set(attribute, source);
-      element.setAttribute(attribute, translate(locale, source));
+      element.setAttribute(attribute, translate(messages, source));
     }
     if (element instanceof HTMLAnchorElement) {
       const original =
@@ -57,13 +63,13 @@ function translateTree(locale: Locale, root: Node = document.body) {
   }
   document.documentElement.lang = languageTags[locale];
   originalTitle ||= document.title;
-  document.title = translate(locale, originalTitle);
+  document.title = translate(messages, originalTitle);
   const description = document.querySelector<HTMLMetaElement>(
     'meta[name="description"]',
   );
   if (description) {
     originalDescription ||= description.content;
-    description.content = translate(locale, originalDescription);
+    description.content = translate(messages, originalDescription);
   }
   for (const selector of [
     'meta[property="og:title"]',
@@ -80,29 +86,32 @@ function translateTree(locale: Locale, root: Node = document.body) {
     }
     const source = sources.get('content') ?? meta.content;
     sources.set('content', source);
-    meta.content = translate(locale, source);
+    meta.content = translate(messages, source);
   }
-  document.querySelector('link[data-language-canonical]')?.remove();
-  const canonical = document.createElement('link');
-  canonical.rel = 'canonical';
-  const canonicalUrl = new URL(window.location.href);
+  let canonical = document.querySelector<HTMLLinkElement>(
+    'link[rel="canonical"]',
+  );
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    document.head.appendChild(canonical);
+  }
+  const canonicalUrl = new URL(window.location.pathname, SITE_URL);
   if (locale === 'en') canonicalUrl.searchParams.delete('lang');
   else canonicalUrl.searchParams.set('lang', locale);
   canonical.href = canonicalUrl.toString();
-  canonical.dataset.languageCanonical = 'true';
-  document.head.appendChild(canonical);
   document
-    .querySelectorAll('link[data-language-alternate]')
+    .querySelectorAll('link[rel="alternate"][hreflang]')
     .forEach((link) => link.remove());
-  for (const code of locales) {
+  for (const code of [...locales, 'x-default'] as const) {
     const alternate = document.createElement('link');
     alternate.rel = 'alternate';
-    alternate.hreflang = languageTags[code];
-    const url = new URL(window.location.href);
-    if (code === 'en') url.searchParams.delete('lang');
-    else url.searchParams.set('lang', code);
+    alternate.hreflang =
+      code === 'x-default' ? 'x-default' : languageTags[code];
+    const url = new URL(window.location.pathname, SITE_URL);
+    if (code !== 'en' && code !== 'x-default')
+      url.searchParams.set('lang', code);
     alternate.href = url.toString();
-    alternate.dataset.languageAlternate = 'true';
     document.head.appendChild(alternate);
   }
 }
@@ -114,24 +123,39 @@ function selectedLocale(): Locale {
 }
 export function LanguageRuntime() {
   useEffect(() => {
-    const apply = () => translateTree(selectedLocale());
-    apply();
-    const observer = new MutationObserver((records) => {
+    let activeLocale: Locale = 'en';
+    let activeMessages: Record<string, string> = {};
+    let cancelled = false;
+    const apply = async () => {
       const locale = selectedLocale();
+      const messages = await loadMessages(locale);
+      if (cancelled) return;
+      activeLocale = locale;
+      activeMessages = messages;
+      translateTree(locale, messages);
+    };
+    void apply();
+    const observer = new MutationObserver((records) => {
       for (const record of records)
-        for (const added of record.addedNodes) translateTree(locale, added);
+        for (const added of record.addedNodes)
+          translateTree(activeLocale, activeMessages, added);
     });
     observer.observe(document.body, { childList: true, subtree: true });
-    window.addEventListener('nexavoris-language-change', apply);
     return () => {
+      cancelled = true;
       observer.disconnect();
-      window.removeEventListener('nexavoris-language-change', apply);
     };
   }, []);
   return null;
 }
 export function LanguageSelector() {
   const [locale, setLocale] = useState<Locale>('en');
+  const selectorLabels: Record<Locale, string> = {
+    en: 'Select display language',
+    'zh-cn': '选择显示语言',
+    'zh-tw': '選擇顯示語言',
+    es: 'Seleccionar idioma de visualización',
+  };
   useEffect(() => setLocale(selectedLocale()), []);
   const changeLanguage = (next: Locale) => {
     setLocale(next);
@@ -139,21 +163,16 @@ export function LanguageSelector() {
     const url = new URL(window.location.href);
     if (next === 'en') url.searchParams.delete('lang');
     else url.searchParams.set('lang', next);
-    window.history.replaceState(
-      {},
-      '',
-      `${url.pathname}${url.search}${url.hash}`,
-    );
-    window.dispatchEvent(new Event('nexavoris-language-change'));
+    window.location.assign(`${url.pathname}${url.search}${url.hash}`);
   };
   return (
     <label className="language-selector" data-no-translate>
       <Globe2 size={16} />
-      <span className="sr-only">Language</span>
+      <span className="sr-only">{selectorLabels[locale]}</span>
       <select
         value={locale}
         onChange={(event) => changeLanguage(event.target.value as Locale)}
-        aria-label="Select display language"
+        aria-label={selectorLabels[locale]}
       >
         {locales.map((code) => (
           <option value={code} key={code}>

@@ -1,7 +1,3 @@
-import en from '@/locales/en.json';
-import zhCN from '@/locales/zh-CN.json';
-import zhTW from '@/locales/zh-TW.json';
-import es from '@/locales/es.json';
 import { overrides } from '@/locales/overrides';
 export const locales = ['en', 'zh-cn', 'zh-tw', 'es'] as const;
 export type Locale = (typeof locales)[number];
@@ -17,15 +13,19 @@ export const languageTags: Record<Locale, string> = {
   'zh-tw': 'zh-TW',
   es: 'es',
 };
-export const messages: Record<Locale, Record<string, string>> = {
-  en,
-  'zh-cn': { ...zhCN, ...overrides['zh-cn'] },
-  'zh-tw': { ...zhTW, ...overrides['zh-tw'] },
-  es: { ...es, ...overrides.es },
-};
 export function isLocale(value: string | null): value is Locale {
   return locales.includes(value as Locale);
 }
-export function translate(locale: Locale, source: string) {
-  return messages[locale][source] || source;
+export async function loadMessages(locale: Locale): Promise<Record<string, string>> {
+  if (locale === 'en') return {};
+  const catalog =
+    locale === 'zh-cn'
+      ? (await import('@/locales/zh-CN.json')).default
+      : locale === 'zh-tw'
+        ? (await import('@/locales/zh-TW.json')).default
+        : (await import('@/locales/es.json')).default;
+  return { ...catalog, ...overrides[locale] };
+}
+export function translate(messages: Record<string, string>, source: string) {
+  return messages[source] || source;
 }

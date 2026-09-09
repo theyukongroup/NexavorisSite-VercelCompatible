@@ -1,0 +1,8 @@
+import {AuthorityPage} from '@/components/authority-page';import {authorityMetadata} from '@/lib/seo';
+export const metadata=authorityMetadata('Trust, Data & AI Practices','How Nexavoris approaches data access, permissions, human oversight, security boundaries, and responsible AI limitations.','/trust');
+export default function Page(){return <AuthorityPage eyebrow="TRUST & TRANSPARENCY" title="Control begins with clear boundaries and accountable people." intro="Security and privacy depend on actual architecture, configuration, contracts, operating procedures, and people—not a product label. Nexavoris does not claim certifications that have not been independently verified." sections={[
+{title:'Data minimization',body:'A solution should use only information required for its approved purpose. Data sources, access paths, retention, and administrative ownership should be documented before production use.'},
+{title:'Permissions and oversight',body:'Access follows business roles. High-impact, sensitive, financial, personnel, safety, or irreversible actions require defined human review and auditability.'},
+{title:'AI limitations',body:'AI output can be incomplete, outdated, ambiguous, or wrong. Retrieval improves grounding but does not eliminate error. Important answers and proposed actions must remain traceable and reviewable.'},
+{title:'Implementation-specific security',body:'Backups, updates, identity, network controls, logging, encryption, vendor terms, incident response, and recovery must be designed for the actual environment. No universal configuration is represented as sufficient.'}
+]} />}

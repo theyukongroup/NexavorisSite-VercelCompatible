@@ -20,13 +20,18 @@ Vercel with zero special configuration.
 
 **Do not merge these two folders, and do not point this folder's git remote at
 `theyukongroup/nexavoris-website`.** They are two separate GitHub repos on
-purpose, so a push to one can never silently affect the other.
+purpose, so a push to one can never silently affect the other. This folder's
+`origin` is `theyukongroup/NexavorisSite-VercelCompatible`; the old
+`DamianYuDezign/Nexavoris-TestSite` remote is retained as `testsite`.
 
-| | `07 Website\nexavoris-website\` | `08 Website (Vercel)\` (here) |
+`07 Website\` is the **primary** copy and is read-only for us — never edit it.
+All Vercel-side work happens here.
+
+| | `07 Website\nexavoris-website\` | `10 User Data and Files\Damian\Nexavoris (Vercel Compatible)\` (here) |
 |---|---|---|
 | Framework | `vinext` (beta) via Vite | Next.js |
 | Deploy target | Cloudflare Workers, via OpenAI Sites | Vercel |
-| GitHub repo | `theyukongroup/nexavoris-website` | *(new repo — see below)* |
+| GitHub repo | `theyukongroup/nexavoris-website` | `theyukongroup/NexavorisSite-VercelCompatible` |
 | Edit via | OpenAI Codex / Sites | Any normal Next.js workflow |
 
 ## What was verified before porting (2026-09-03)
@@ -73,44 +78,91 @@ needs to be **manually re-applied here** — there is no automatic sync between
 the two. If that becomes painful, the honest fix is to pick one as the single
 source of truth and stop maintaining both.
 
-## Sync state (2026-09-03)
+## Sync state (2026-09-09)
 
-Content is synced through origin commit **`6d90ffe` "Add four-language website
-localization"** (2026-09-04) — the editorial redesign, /equipment page with
-Nexavoris equipment tiers, reduced pricing, sitewide photography, the
-industries client-story redesign, the About redesign, the sticky header, the
-footer contact details (nexavoris.ai domain, Stafford TX address), and the
-client-side en/zh-CN/zh-TW/es localization (`lib/i18n.ts`, `locales/`,
-`components/language-runtime.tsx`).
+Content is synced through origin commit **`f8fbb8b` "Document live search
+visibility growth plan"**. This pulled in 15 origin commits / 83 changed files:
+the Phase 1-3 GEO/SEO infrastructure (`lib/seo.ts`, per-page canonical and
+hreflang metadata, `robots.ts`, `sitemap.ts`), the multilingual resource
+library (`app/resources/`, `lib/resource-content.ts`), the authority pages
+(case studies, how-it-works, methodology, trust, privacy, terms), industry
+personalization, the mobile navigation drawer, and the `theme-v2.css` refresh.
 
-Note: this copy also aligns `sitemap.ts`/`robots.ts` to **nexavoris.ai** (the
-origin still says nexavoris.com there while its metadataBase is .ai), and keeps
-the transparent `nexavoris-logo.png` (origin's is white-backed and relies only
-on `mix-blend-mode: multiply` — the transparent file renders identically and
-also works where blending is off).
+The origin also fixed the `sitemap.ts`/`robots.ts` domain mismatch noted
+previously — both now derive from `SITE_URL` in `lib/seo.ts` (`nexavoris.ai`),
+so that divergence is retired.
+
+### Deliberately NOT ported: the member platform
+
+The origin's member platform and admin dashboard depend on two things that do
+not exist on Vercel:
+
+- **Cloudflare D1** — `lib/member-db.ts` and `lib/admin-auth.ts` import
+  `cloudflare:workers` and type against `D1Database`.
+- **ChatGPT identity** — `app/chatgpt-auth.ts` (`getChatGPTUser`,
+  `chatGPTSignInPath`) is supplied by OpenAI Sites.
+
+Porting them requires choosing a Postgres host and an auth provider, and
+rewriting the data layer against it. The schema is already plain SQL in the
+origin's `.openai/drizzle/` migrations, so it would move without redesign.
+
+Omitted here: `app/account/`, `app/free-account/`, `app/admin/`,
+`app/api/member|events|consultations/`, `app/chatgpt-auth.ts`,
+`lib/member-db.ts`, `lib/admin-auth.ts`, and `MemberDashboard` (and its
+Profile/Opportunity/ROI/Roadmap tools) from `components/member-platform.tsx`.
+
+Kept, because they are self-contained and need no database: `ScoreCards` and
+`AssessmentTool`, so the public `/assessment` lead-generation page works. Its
+analytics `emit()` posts to `/api/events`, which does not exist here — the call
+is already `void fetch(...).catch(() => undefined)`, so it fails silently.
+
+Consequently:
+
+- `layout.tsx` drops the header Sign In / My Account link and the
+  `/free-account` footer link.
+- `MobileNavigation`'s `signedIn` / `accountHref` props are now optional; the
+  account section of the drawer renders only when `accountHref` is supplied.
+  Pass it again once auth exists.
+- `/free-account` is commented out of `marketingRoutes` in `lib/seo.ts` so the
+  sitemap does not advertise a 404. `robots.ts` still disallows the member
+  paths, which is harmless and forward-compatible.
+- `proxy.ts` is kept exactly as the origin has it. Next.js 16 **renamed the
+  middleware convention to `proxy`** — `middleware.ts` now emits a deprecation
+  warning and `npx @next/codemod@canary middleware-to-proxy .` is the official
+  migration. vinext already follows the Next 16 convention, so no change was
+  needed. (An earlier pass converted it to `middleware.ts`; that was backwards
+  and has been reverted.)
 
 ## Deliberate divergences from the origin
 
-Fixes and additions that exist only in this copy — re-apply them after any
-future re-sync from `07 Website\nexavoris-website`:
+Fixes that exist only in this copy — **re-apply them after any future re-sync**
+from `07 Website\nexavoris-website`:
 
-1. **Pricing CSS collision fix** — `extended.css`, `pricing.css`, and
-   `theme-v2.css` all define `.pricing-grid`/`.price`/`.popular` globally, so
-   `/pricing` and `/website-design` corrupt each other (e.g. extended.css makes
-   `/pricing`'s `article.popular` position:absolute). Fixed by scoping the
-   website-design rules under `.pricing` and the services-pricing rules under
-   `.pricing-group` (see `scope_css.py` history in the work log). The origin
-   still has this bug.
-2. **`app/fixes.css` + `components/mobile-nav.tsx`** — mobile menu (origin
-   hides the nav below 1000px with no fallback at all), `:focus-visible`
-   outlines, and a `prefers-reduced-motion` guard. Wired into `layout.tsx`.
-   (The trailing empty grid tiles on the solution/module grids are the
-   origin's deliberate editorial checkerboard, not a bug.)
-3. **Transparent logo + real favicons** — `nexavoris-logo.png` had a baked
-   white background that clashed with the paper header; it is now transparent.
-   `favicon.png` / `favicon.ico` / `apple-touch-icon.png` are cropped from the
-   hexagon mark (the origin's `favicon.svg` is a generic placeholder and is no
-   longer referenced).
-4. **SEO/AEO** — per-page canonical URLs, Organization + WebSite JSON-LD in
-   `layout.tsx`, and `public/llms.txt`. `robots.ts`/`sitemap.ts` come from the
-   origin and were kept as-is. The share image `/og.png` is the origin's.
+1. **Pricing CSS collision fix** — `extended.css` and `theme-v2.css` define
+   `.pricing-grid` / `.price` / `.popular` globally, so `/pricing` and
+   `/website-design` corrupt each other. Fixed by scoping the website-design
+   rules under `.pricing`. **The 2026-09-09 sync overwrote this and it was
+   re-applied** (18 selectors in `extended.css`, 9 in `theme-v2.css`). The
+   origin has since scoped the services-pricing half under `.pricing-group`
+   itself, so only the `.pricing` half is still ours to maintain.
+2. **`app/fixes.css`** — `:focus-visible` outlines and a
+   `prefers-reduced-motion` guard, imported from `layout.tsx`. The origin now
+   ships a real mobile drawer (`components/mobile-navigation.tsx`), which
+   supersedes the old local `components/mobile-nav.tsx`; that file is now
+   unused and can be deleted once the drawer is confirmed good.
+3. **Transparent logo + real favicons** — `nexavoris-logo.png` is transparent
+   here. `favicon.ico` / `favicon.png` / `apple-touch-icon.png` are cropped
+   from the hexagon mark. **The 2026-09-09 sync reverted `layout.tsx` to the
+   origin's placeholder `/favicon.svg` and it was restored.**
+4. **`public/llms.txt`** — AEO file, this copy only.
+5. **`components/contact-content.tsx`** — the origin's `app/contact/page.tsx`
+   takes a `messages` prop so `localized-content` can re-render it with
+   translations. Next.js 16 validates that a route page's props match
+   `PageProps`, so a `messages` prop makes the build fail type checking. The
+   body now lives in `components/contact-content.tsx`; `app/contact/page.tsx`
+   is a thin wrapper, and `localized-content` imports the component directly.
+6. **`localized-content` route-key cast** — the origin casts
+   `routeKey(slug)` to `keyof typeof pages`, which excludes `'contact'`, then
+   compares the result to `'contact'` two lines later. That is a type error
+   under `tsc`. Widened to `keyof typeof pages | 'contact'`. **This bug is
+   still live in the origin** — vinext is evidently not type checking it.

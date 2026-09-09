@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowDown, ArrowUpRight, Check } from 'lucide-react';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About',
-  description: 'Meet Nexavoris: practical AI, ERP, automation, and long-term technology partnership for operational businesses.',
-};
+export const metadata: Metadata = pageMetadata('About', 'Meet Nexavoris: practical AI, ERP, automation, and long-term technology partnership for operational businesses.', '/about');
 
 const principles = [
   { number: '01', title: 'Business before software', eyebrow: 'START WITH THE WORK', image: '/about/business-before-software.webp', alt: 'Business owner and technology consultant mapping an operational workflow', body: 'We begin by understanding how work actually moves through your company: where decisions happen, where information gets lost, and what your team needs to do its best work. Only then do we design the technology.', note: 'Processes, constraints, people, and outcomes come first.' },
@@ -59,6 +57,11 @@ export default function AboutPage() {
           <article><div className="about-step-image"><Image src="/about/step-adopt-improve.webp" alt="Operational team reviewing results and planning the next improvement" fill sizes="(max-width: 640px) 100vw, 33vw"/></div><div className="about-step-copy"><b>03</b><h3>Adopt & improve</h3><p>We support your team through launch, then continue refining the system as the business learns and grows.</p></div></article>
         </div>
       </div>
+    </section>
+
+    <section className="authority-body section-shell">
+      <section><span>05</span><div><h2>What Nexavoris does not promise</h2><p>We do not represent AI as error-free, ERP as a shortcut around process decisions, or automation as a substitute for accountable people. We do not promise savings, timing, security, or business outcomes before the current environment and scope are understood.</p></div></section>
+      <section><span>06</span><div><h2>Who we serve</h2><p>Nexavoris works with operational small and medium-sized businesses across the United States, with particular attention to wholesale distribution, HVAC and field service, construction, manufacturing, retail, and professional services.</p><p><a href="/how-nexavoris-works">Read the implementation process</a>{' · '}<a href="/trust">Review trust and data practices</a>{' · '}<a href="/case-studies">Understand our evidence standard</a></p></div></section>
     </section>
 
     <section className="about-cta section-shell">

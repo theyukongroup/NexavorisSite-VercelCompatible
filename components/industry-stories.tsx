@@ -41,6 +41,14 @@ export function IndustryStories({ stories }: { stories: IndustryStory[] }) {
     triggerRef.current = trigger;
     setActive(story);
   };
+  const resourceSlugs: Record<string, string> = {
+    'Wholesale & Distribution': 'wholesale-distribution',
+    'HVAC & Field Service': 'hvac-field-service',
+    Construction: 'construction',
+    Retail: 'retail',
+    Manufacturing: 'manufacturing',
+    'Service Companies': 'professional-services',
+  };
 
   return <>
     <section className="industry-stories section-shell" aria-label="Industry client stories">
@@ -69,9 +77,9 @@ export function IndustryStories({ stories }: { stories: IndustryStory[] }) {
         <div className="story-modal-content">
           <q>{active.shortQuote}</q>
           <div className="story-modal-narrative">{active.fullStory.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
-          <p className="story-confidentiality">Customer and company names are intentionally omitted to protect confidentiality.</p>
+          <p className="story-confidentiality">Representative industry scenario—not a verified customer testimonial or measured Nexavoris result.</p>
           <div className="story-solutions"><span>Nexavoris Solutions Used</span><ul>{active.solutionsUsed.map((solution) => <li key={solution}>{solution}</li>)}</ul></div>
-          <div className="story-modal-footer"><a className="button primary" href={active.cta}>Talk to Nexavoris About Your Workflow <ArrowUpRight size={16}/></a></div>
+          <div className="story-modal-footer"><a className="text-link" href={`/resources/industries/${resourceSlugs[active.industry]}`}>Read the practical industry guide <ArrowUpRight size={16}/></a><a className="button primary" href={active.cta}>Talk to Nexavoris About Your Workflow <ArrowUpRight size={16}/></a></div>
         </div>
       </article>
     </div>}

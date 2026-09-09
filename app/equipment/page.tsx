@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowRight, Check, Database, Gauge, HardDrive, Network, ShieldCheck } from 'lucide-react';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Business Server Equipment',
-  description: 'The practical on-premises server platforms Nexavoris recommends for Odoo ERP and private AI workloads.',
-};
+export const metadata: Metadata = pageMetadata('Business Server Equipment', 'The practical on-premises server platforms Nexavoris recommends for Odoo ERP and private AI workloads.', '/equipment');
 
 const aiLink = 'https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc';
 

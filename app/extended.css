@@ -6,7 +6,7 @@
   padding: 1px;
   margin-bottom: 120px;
 }
-.ai-erp-section-visual{height:430px;position:relative;overflow:hidden;margin:38px 0 48px;border:1px solid #c9cec7}.ai-erp-section-visual img{object-fit:cover;transition:transform .6s ease}.ai-erp-section-visual:hover img{transform:scale(1.018)}.ai-erp-section-visual.dark{border-color:#596a62;margin-top:48px;margin-bottom:0}.ai-erp-section-visual.dark+.ai-erp-pillars{margin-top:0}
+.ai-erp-section-visual{height:430px;position:relative;overflow:hidden;margin:38px auto 48px;border:1px solid #c9cec7}.ai-erp-section-visual img{object-fit:cover;transition:transform .6s ease}.ai-erp-section-visual:hover img{transform:scale(1.018)}.ai-erp-section-visual.dark{border-color:#596a62;margin-top:48px;margin-bottom:0}.ai-erp-section-visual.dark+.ai-erp-pillars{margin-top:0}
 .problem-grid article {
   background: #070d19;
   min-height: 360px;
