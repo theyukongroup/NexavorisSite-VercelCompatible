@@ -1,0 +1,28 @@
+import 'server-only';
+import { memberDB } from '@/lib/member-db';
+
+export const strategicKeywords = [
+  ['Nexavoris','Branded','/','High'],['Nexavoris AI','Branded','/','High'],['Nexavoris AI ERP','Branded','/','High'],['Nexavoris ERP','Branded','/','High'],['Nexavoris Private AI','Branded','/ai-solutions','High'],
+  ['AI ERP','Core','/ai-erp','High'],['AI ERP integration','Core','/ai-erp','High'],['AI ERP system','Core','/ai-erp','High'],['AI ERP for small business','Core','/ai-erp','High'],['Private AI for business','Core','/ai-solutions','High'],['Odoo AI integration','Core','/ai-erp','High'],
+  ['AI ERP for wholesale distribution','Industry','/resources/industries/wholesale-distribution','High'],['AI for wholesale distribution','Industry','/resources/industries/wholesale-distribution','Medium'],['Odoo for wholesale distribution','Industry','/resources/industries/wholesale-distribution','High'],['AI ERP for HVAC','Industry','/resources/industries/hvac-field-service','High'],['AI for HVAC','Industry','/resources/industries/hvac-field-service','Medium'],['Odoo for HVAC','Industry','/resources/industries/hvac-field-service','High'],['AI for field service','Industry','/resources/industries/hvac-field-service','Medium'],['Private AI for SOP search','Industry','/resources/private-ai','High'],['AI employee knowledge base','Industry','/ai-solutions','Medium'],
+  ['Private AI vs ChatGPT','Buyer','/resources/comparisons','High'],['Odoo Community vs Enterprise','Buyer','/resources/comparisons','High'],['Odoo vs QuickBooks','Buyer','/resources/comparisons','High'],['Local AI vs Cloud AI','Buyer','/resources/comparisons','Medium'],['AI ERP implementation cost','Buyer','/resources/guides','High'],['Private AI cost','Buyer','/resources/guides','High'],['Odoo implementation cost','Buyer','/resources/guides','High'],['AI ERP consultant','Buyer','/ai-erp','Medium'],['AI ERP company','Buyer','/ai-erp','Medium'],
+] as const;
+
+export const importantRoutes = ['/','/ai-solutions','/erp-solutions','/website-design','/ai-erp','/equipment','/industries','/pricing','/about','/contact','/free-account','/assessment','/resources','/resources/private-ai','/resources/odoo-erp','/resources/ai-erp','/resources/business-automation','/resources/comparisons','/resources/guides','/resources/industries/wholesale-distribution','/resources/industries/hvac-field-service','/case-studies','/how-nexavoris-works','/trust'];
+
+export const geoPrompts = [
+  'What is AI ERP?','How does AI ERP differ from traditional ERP?','What companies provide AI ERP integration for small businesses?','What companies integrate private AI with Odoo?','Can private AI connect with Odoo?','Can AI safely read ERP data?','Can AI generate ERP reports?','How should AI actions in ERP be approved?','What does AI ERP implementation cost?','How long does AI ERP implementation take?','What is the best AI ERP approach for a small business?','How can a wholesale distributor implement AI and ERP?','What AI tools help wholesale distribution inventory?','How can AI improve purchasing in Odoo?','What is AI ERP for HVAC companies?','How can AI help HVAC field-service technicians?','Can Odoo manage HVAC memberships?','How can private AI search company SOPs?','What is an AI employee knowledge base?','Private AI versus ChatGPT for confidential business documents?','Local AI versus cloud AI for a business?','Odoo Community versus Enterprise for a small company?','Odoo versus QuickBooks for distribution?','What should an AI ERP readiness assessment measure?','What companies offer AI ERP consulting in Texas?','Who provides Odoo implementation in Houston?','How do I connect company knowledge to ERP workflows?','What are the security risks of AI ERP integration?','How can AI automate quotations and purchase recommendations?','How should a company measure ERP automation ROI?',
+] as const;
+
+const idFor = (value:string) => value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+export async function ensureSeoGeoSeed() {
+  const db=memberDB(), now=new Date().toISOString();
+  const keywordStatements=strategicKeywords.map(([keyword,category,target,priority])=>db.prepare("INSERT OR IGNORE INTO seo_keywords (id,keyword,category,target_url,priority,active,created_at,updated_at) VALUES (?,?,?,?,?,1,?,?)").bind(`kw-${idFor(keyword)}`,keyword,category,target,priority,now,now));
+  const indexingStatements=importantRoutes.map(route=>db.prepare("INSERT OR IGNORE INTO seo_indexing_status (url,indexed_status,expected_canonical,in_sitemap,updated_at) VALUES (?,'Unknown',?,1,?)").bind(route,`https://nexavoris.ai${route==='/'?'':route}`,now));
+  const taskRows=[
+    ['Check Google ranking for “AI ERP integration”','Google ranking','Weekly'],['Review Google Search Console performance and sitemap','Search Console','Weekly'],['Review indexing and striking-distance keywords','Indexing','Weekly'],['Review organic conversion events','Conversions','Weekly'],['Run the strategic ChatGPT GEO test set','ChatGPT','Monthly'],['Review Google AI visibility','Google AI','Monthly'],['Review Bing rankings and Copilot citations','Bing/Copilot','Monthly'],['Review new and lost backlinks','Backlinks','Monthly'],
+  ] as const;
+  const taskStatements=[...taskRows,...geoPrompts.map(prompt=>[`Test GEO prompt: “${prompt}”`,'GEO prompt','Monthly'] as const)].map(([title,type,cadence])=>db.prepare("INSERT OR IGNORE INTO seo_manual_tasks (id,title,task_type,cadence,status,created_at,updated_at) VALUES (?,?,?,?, 'Pending',?,?)").bind(`task-${idFor(title)}`,title,type,cadence,now,now));
+  await db.batch([...keywordStatements,...indexingStatements,...taskStatements]);
+}

@@ -1,0 +1,137 @@
+/* Vercel-only: sign-in, email verification and password pages.
+   Every selector is prefixed .auth- because App Router stylesheets are global. */
+
+.auth-page {
+  display: grid;
+  place-items: start center;
+  min-height: 70vh;
+  padding: clamp(3rem, 8vw, 6.5rem) 1.25rem;
+  background: #eef0eb;
+}
+
+.auth-card {
+  width: min(100%, 480px);
+  background: #fffefa;
+  border: 1px solid #c9cec7;
+  padding: clamp(1.75rem, 5vw, 2.75rem);
+  box-shadow: 0 22px 48px rgba(23, 34, 39, 0.08);
+}
+
+.auth-card h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #172227;
+  margin: 0 0 0.75rem;
+}
+
+.auth-card > p {
+  color: #53615c;
+  line-height: 1.65;
+  margin: 0 0 1.75rem;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #c9cec7;
+  margin-bottom: 2rem;
+}
+
+.auth-tabs button {
+  font: 600 0.95rem var(--font-sans);
+  padding: 0.8rem 0.5rem;
+  background: transparent;
+  border: 0;
+  color: #53615c;
+  cursor: pointer;
+}
+
+.auth-tabs button.active {
+  background: #1f5c4d;
+  color: #fff;
+}
+
+.auth-form,
+.auth-inline,
+.auth-sent {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.auth-inline {
+  margin-top: 1.25rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.45rem;
+  font: 600 0.85rem var(--font-sans);
+  color: #172227;
+}
+
+.auth-form input {
+  font: 400 1rem var(--font-sans);
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #9fa9a3;
+  border-radius: 1px;
+  background: #fff;
+  color: #172227;
+}
+
+.auth-form input:focus {
+  border-color: #1f5c4d;
+}
+
+.auth-form small {
+  font-weight: 400;
+  color: #5d6965;
+}
+
+.auth-card .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.auth-card .button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.auth-message {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  background: #eef0eb;
+  border-left: 3px solid #1f5c4d;
+  color: #172227;
+}
+
+.auth-message.error {
+  background: #fbf0ea;
+  border-left-color: #b4532a;
+}
+
+.auth-link {
+  justify-self: start;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: 600 0.9rem var(--font-sans);
+  color: #1f5c4d;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.auth-sent > svg,
+.auth-card .auth-icon {
+  color: #d88758;
+}

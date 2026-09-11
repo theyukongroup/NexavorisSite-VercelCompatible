@@ -5,7 +5,7 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { LanguageSelector } from '@/components/language-runtime';
 
-type Props = { signedIn?: boolean; accountHref?: string };
+type Props = { signedIn: boolean; accountHref: string };
 const groups = [
   {
     label: 'Services',
@@ -48,7 +48,7 @@ const groups = [
   },
 ] as const;
 
-export function MobileNavigation({ signedIn = false, accountHref }: Props) {
+export function MobileNavigation({ signedIn, accountHref }: Props) {
   const [open, setOpen] = useState(false);
   const closeButton = useRef<HTMLButtonElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -153,27 +153,25 @@ export function MobileNavigation({ signedIn = false, accountHref }: Props) {
               </a>
               <small>Free • No credit card required</small>
             </section>
-            {accountHref ? (
-  <section className="mobile-account-controls">
-                <b>Account</b>
-                {signedIn ? (
-                  <>
-                    <a href="/account">My Dashboard</a>
-                    <a href="/account?tool=roadmap">My Roadmap</a>
-                    <a href="/signout-with-chatgpt?return_to=%2F" target="_top">
-                      Sign Out
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    <a href={accountHref} target="_top">
-                      Sign In
-                    </a>
-                    <a href="/free-account">Create Free Account</a>
-                  </>
-                )}
-              </section>
-            ) : null}
+            <section className="mobile-account-controls">
+              <b>Account</b>
+              {signedIn ? (
+                <>
+                  <a href="/account">My Dashboard</a>
+                  <a href="/account?tool=roadmap">My Roadmap</a>
+                  <a href="/signout-with-chatgpt?return_to=%2F" target="_top">
+                    Sign Out
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a href={accountHref} target="_top">
+                    Sign In
+                  </a>
+                  <a href="/free-account">Create Free Account</a>
+                </>
+              )}
+            </section>
             <section className="drawer-language">
               <b>Display language</b>
               <LanguageSelector />

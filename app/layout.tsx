@@ -8,6 +8,7 @@ import {
   LanguageSelector,
 } from '@/components/language-runtime';
 import { SITE_URL } from '@/lib/seo';
+import { chatGPTSignInPath, getChatGPTUser } from '@/app/chatgpt-auth';
 import { MobileNavigation } from '@/components/mobile-navigation';
 import { isLocale, languageTags } from '@/lib/i18n';
 import './globals.css';
@@ -45,8 +46,6 @@ export const metadata: Metadata = {
     },
   },
   category: 'business technology services',
-  // Local divergence: real favicons cropped from the hexagon mark.
-  // The origin's /favicon.svg is a generic placeholder - do not re-adopt it.
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },
@@ -99,6 +98,7 @@ export default async function RootLayout({
   const documentLanguage = isLocale(localeHeader)
     ? languageTags[localeHeader]
     : 'en-US';
+  const member = await getChatGPTUser();
   return (
     <html lang={documentLanguage} suppressHydrationWarning>
       <body className={`${sans.variable} ${display.variable} ${mono.variable}`}>
@@ -124,10 +124,20 @@ export default async function RootLayout({
             ))}
           </nav>
           <LanguageSelector />
+          <a
+            className="member-header-link"
+            href={member ? '/account' : chatGPTSignInPath('/account')}
+            target={member ? undefined : '_top'}
+          >
+            {member ? 'My Account' : 'Sign In'}
+          </a>
           <a className="nav-cta desktop-assessment" href="/assessment">
             Free AI + ERP Assessment <ArrowUpRight size={16} />
           </a>
-          <MobileNavigation />
+          <MobileNavigation
+            signedIn={Boolean(member)}
+            accountHref={chatGPTSignInPath('/account')}
+          />
         </header>
         <div id="main-content">{children}</div>
         <footer>
@@ -147,6 +157,7 @@ export default async function RootLayout({
             <p>AI that understands your business. ERP that runs it.</p>
           </div>
           <address className="footer-contact">
+            <a href="/free-account">Free Business Account</a>
             <a href="/how-nexavoris-works">How Nexavoris Works</a>
             <a href="/case-studies">Case Studies</a>
             <a href="/trust">Trust &amp; Data Practices</a>

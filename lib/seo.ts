@@ -13,7 +13,7 @@ export const marketingRoutes = [
   '/pricing',
   '/about',
   '/contact',
-  // '/free-account' omitted on Vercel: the member platform is not ported yet.
+  '/free-account',
   '/assessment',
 ] as const;
 
