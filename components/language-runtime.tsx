@@ -123,27 +123,19 @@ function selectedLocale(): Locale {
 }
 export function LanguageRuntime() {
   useEffect(() => {
-    let activeLocale: Locale = 'en';
-    let activeMessages: Record<string, string> = {};
     let cancelled = false;
     const apply = async () => {
       const locale = selectedLocale();
+      // English is already rendered by the server. Avoid walking a large page
+      // when no translation work is required.
+      if (locale === 'en') return;
       const messages = await loadMessages(locale);
       if (cancelled) return;
-      activeLocale = locale;
-      activeMessages = messages;
       translateTree(locale, messages);
     };
     void apply();
-    const observer = new MutationObserver((records) => {
-      for (const record of records)
-        for (const added of record.addedNodes)
-          translateTree(activeLocale, activeMessages, added);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
     return () => {
       cancelled = true;
-      observer.disconnect();
     };
   }, []);
   return null;

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { ArrowDown, ArrowUpRight, Check } from 'lucide-react';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = pageMetadata('About', 'Meet Nexavoris: practical AI, ERP, automation, and long-term technology partnership for operational businesses.', '/about');
+export const metadata: Metadata = pageMetadata('About Nexavoris AI & ERP Systems', 'Nexavoris serves operational small and midsize businesses with Private AI, Odoo ERP, AI ERP integration, automation, and practical implementation support.', '/about');
 
 const principles = [
   { number: '01', title: 'Business before software', eyebrow: 'START WITH THE WORK', image: '/about/business-before-software.webp', alt: 'Business owner and technology consultant mapping an operational workflow', body: 'We begin by understanding how work actually moves through your company: where decisions happen, where information gets lost, and what your team needs to do its best work. Only then do we design the technology.', note: 'Processes, constraints, people, and outcomes come first.' },
@@ -18,7 +18,7 @@ export default function AboutPage() {
       <div className="about-hero-copy">
         <span className="eyebrow">ABOUT NEXAVORIS</span>
         <h1>Technology should fit the business. Not the other way around.</h1>
-        <p>Nexavoris helps established small and medium-sized businesses modernize without losing the knowledge, discipline, and relationships that made them successful.</p>
+        <p>Nexavoris AI &amp; ERP Systems helps established small and medium-sized businesses modernize with Private AI, Odoo ERP, AI ERP integration, and business automation—without losing the knowledge, discipline, and relationships that made them successful.</p>
         <a className="about-scroll" href="#our-approach">See how we work <ArrowDown size={16}/></a>
       </div>
       <aside className="about-hero-statement">

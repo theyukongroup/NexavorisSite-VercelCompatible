@@ -20,59 +20,7 @@ textarea:focus-visible {
   outline-color: #d89576;
 }
 
-/* 2. Mobile navigation — the origin hides the header nav below 1000px
-      with no menu and no footer links, leaving pages unreachable. */
-.mobile-nav { display: none; }
-@media (max-width: 1000px) {
-  .mobile-nav { display: block; margin-left: auto; }
-  /* header is position:sticky (theme-v2), which already anchors .mobile-menu */
-  .mobile-nav > button {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    background: #fffefa;
-    border: 1px solid #9fa9a3;
-    color: #172227;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 1px;
-  }
-  .mobile-nav > button:hover { background: #f0eee8; border-color: #64736c; }
-  .mobile-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    background: #fffefa;
-    border-bottom: 1px solid #c9cec7;
-    box-shadow: 0 22px 38px rgba(23, 34, 39, 0.14);
-    padding: 8px 18px 18px;
-    z-index: 40;
-  }
-  .mobile-menu a {
-    padding: 13px 4px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #46534f;
-    border-bottom: 1px solid #e3e2da;
-  }
-  .mobile-menu a:hover { color: #1f5c4d; }
-  .mobile-menu .mobile-menu-cta {
-    margin-top: 14px;
-    border: none;
-    text-align: center;
-    background: #1f5c4d;
-    color: #fff;
-    padding: 14px;
-    border-radius: 1px;
-  }
-  .mobile-menu .mobile-menu-cta:hover { background: #173f36; color: #fff; }
-}
-
-/* 3. Respect the user's reduced-motion preference site-wide */
+/* 2. Respect the user's reduced-motion preference site-wide */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *,
