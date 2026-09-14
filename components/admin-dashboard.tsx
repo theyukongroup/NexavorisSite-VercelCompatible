@@ -774,7 +774,7 @@ function UserDrawer({
             <>
               <label htmlFor="primary-industry">Primary industry</label>
               <select id="primary-industry" value={primaryIndustry} onChange={(e) => setPrimaryIndustry(e.target.value)}>
-                {['Wholesale Distribution','HVAC / Field Service','Construction','Manufacturing','Retail','Professional Services','Other'].map((option) => <option key={option}>{option}</option>)}
+                {['Wholesale Distribution','HVAC / Field Service','Construction','Restaurant','Manufacturing','Retail','Professional Services','Other'].map((option) => <option key={option}>{option}</option>)}
               </select>
               <button onClick={() => mutate({ action: 'profile_industry', userId: user.id, industry: primaryIndustry })}>Save industry</button>
               <label htmlFor="account-role">Nexavoris role</label>

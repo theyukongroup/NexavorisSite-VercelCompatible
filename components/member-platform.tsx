@@ -31,6 +31,8 @@ import {
   type ROIInputs,
   type Scores,
 } from '@/lib/member-tools';
+import { RestaurantAssessment } from '@/components/restaurant-assessment';
+import { scoreRestaurantAssessment } from '@/lib/restaurant-assessment';
 
 const questionTranslations: Record<Locale, string[]> = {
   en: assessmentQuestions.map((q) => q.label),
@@ -137,14 +139,16 @@ export function AssessmentTool({
   locale,
   member = false,
   onSaved,
+  initialIndustry,
 }: {
   locale: Locale;
   member?: boolean;
   onSaved?: (answers: AssessmentAnswers, scores: Scores) => void;
+  initialIndustry?: string;
 }) {
   const t = memberCopy[locale];
   const [step, setStep] = useState(-1);
-  const [answers, setAnswers] = useState<AssessmentAnswers>({});
+  const [answers, setAnswers] = useState<AssessmentAnswers>(initialIndustry ? { industry: initialIndustry } : {});
   const [scores, setScores] = useState<Scores | null>(null);
   useEffect(() => {
     if (!member) {
@@ -170,6 +174,8 @@ export function AssessmentTool({
     });
     onSaved?.(answers, result);
   };
+  if ((step > 0 || initialIndustry === 'Restaurant') && answers.industry === 'Restaurant')
+    return <RestaurantAssessment locale={locale} member={member} onSaved={onSaved} initialAnswers={answers} />;
   if (scores)
     return (
       <section className="tool-result">
@@ -314,7 +320,9 @@ export function MemberDashboard({
     if (draft && !loaded.assessment) {
       try {
         const responses = JSON.parse(draft);
-        const scores = scoreAssessment(responses);
+        const scores = responses.industry === 'Restaurant'
+          ? scoreRestaurantAssessment(responses)
+          : scoreAssessment(responses);
         await fetch('/api/member', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

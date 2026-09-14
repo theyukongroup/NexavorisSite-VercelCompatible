@@ -5,6 +5,7 @@ export type IndustryKey =
   | 'hvac'
   | 'construction'
   | 'manufacturing'
+  | 'restaurant'
   | 'retail'
   | 'professional'
   | 'other';
@@ -63,6 +64,16 @@ const phase = (n: number, item: Localized) => ({
 });
 
 export const industryConfig: Record<IndustryKey, IndustryConfig> = {
+  restaurant: make(
+    l('Restaurant','餐厅','餐廳','Restaurante'),
+    l('Improve food cost, purchasing, inventory, kitchen workflow, training, and management visibility.','改善食品成本、采购、库存、厨房流程、培训和管理可视性。','改善食品成本、採購、庫存、廚房流程、培訓和管理可視性。','Mejore costos, compras, inventario, cocina, capacitación y visibilidad.'),
+    '/restaurants/management-ai.png',
+    l('Restaurant owner and kitchen manager reviewing operating information','餐厅经营者与厨房经理查看运营信息','餐廳經營者與廚房經理查看營運資訊','Propietario y gerente revisando operaciones'),
+    [l('Restaurant AI & ERP Readiness Assessment','餐厅 AI 与 ERP 准备度评估','餐廳 AI 與 ERP 準備度評估','Evaluación de IA y ERP para restaurantes'),l('Food Cost & Recipe Review','食品与食谱成本审核','食品與食譜成本審核','Revisión de costos y recetas'),l('Inventory & Purchasing Assessment','库存与采购评估','庫存與採購評估','Evaluación de inventario y compras'),l('Waste Opportunity Finder','浪费机会分析','浪費機會分析','Análisis de desperdicio'),l('Private Restaurant Knowledge AI','餐厅私有知识 AI','餐廳私有知識 AI','IA privada para restaurantes'),l('Restaurant ROI Calculator','餐厅投资回报计算器','餐廳投資回報計算器','Calculadora ROI para restaurantes')],
+    [op('food-cost',l('Recipe and food cost visibility is incomplete','食谱与食品成本可视性不足','食譜與食品成本可視性不足','La visibilidad de costos es incompleta'),l('Recipe and food-cost controls','食谱与食品成本控制','食譜與食品成本控制','Controles de recetas y costos')),op('waste',l('Waste and overproduction are not measured','浪费与过量生产未被衡量','浪費與過量生產未被衡量','No se mide el desperdicio'),l('Waste and demand analysis','浪费与需求分析','浪費與需求分析','Análisis de desperdicio y demanda')),op('buying',l('Vendor price changes are difficult to see','供应商价格变化难以发现','供應商價格變化難以發現','Es difícil ver cambios de proveedores'),l('Vendor price and purchasing history','供应商价格与采购历史','供應商價格與採購歷史','Historial de precios y compras')),op('inventory',l('Ingredient inventory is unreliable','食材库存不可靠','食材庫存不可靠','El inventario de ingredientes no es confiable'),l('Connected ingredient inventory','互联食材库存','互聯食材庫存','Inventario conectado')),op('training',l('Training depends on managers repeating instructions','培训依赖经理重复指导','培訓依賴經理重複指導','La capacitación depende de gerentes'),l('Private recipe and SOP assistant','私有食谱与 SOP 助手','私有食譜與 SOP 助手','Asistente privado de recetas')),op('reporting',l('Management reporting is delayed','管理报告延迟','管理報告延遲','Los informes se retrasan'),l('Restaurant management dashboard','餐厅管理仪表板','餐廳管理儀表板','Panel de gestión del restaurante'))],
+    [phase(1,l('Standardize recipes, vendors, ingredients, and operating definitions','标准化食谱、供应商、食材和运营定义','標準化食譜、供應商、食材和營運定義','Estandarizar recetas, proveedores e ingredientes')),phase(2,l('Connect POS summaries, purchasing, inventory, and accounting','连接 POS 汇总、采购、库存和会计','連接 POS 彙總、採購、庫存和會計','Conectar POS, compras, inventario y contabilidad')),phase(3,l('Deploy a private recipe, SOP, and training assistant','部署私有食谱、SOP 和培训助手','部署私有食譜、SOP 和培訓助手','Implementar asistente privado de recetas y SOP')),phase(4,l('Add demand forecasting, anomaly alerts, and management intelligence','增加需求预测、异常警报与管理智能','增加需求預測、異常警報與管理智慧','Añadir pronóstico, alertas e inteligencia'))],
+    'restaurants',
+  ),
   wholesale: make(
     l('Wholesale Distribution', '批发与分销', '批發與分銷', 'Distribución mayorista'),
     l('See where inventory, purchasing, sales, and AI automation can improve your operation.', '了解库存、采购、销售与 AI 自动化如何改善您的运营。', '了解庫存、採購、銷售與 AI 自動化如何改善您的營運。', 'Vea cómo inventario, compras, ventas y automatización con IA pueden mejorar su operación.'),
@@ -89,13 +100,14 @@ export const industryConfig: Record<IndustryKey, IndustryConfig> = {
   other: make(l('Other','其他','其他','Otro'),l('Explore practical opportunities across connected operations, private knowledge, and responsible automation.','探索互联运营、私有知识与负责任自动化中的实际机会。','探索互聯營運、私有知識與負責任自動化中的實際機會。','Explore oportunidades en operaciones conectadas, conocimiento privado y automatización responsable.'),'/industries/service-companies.webp',l('Business team reviewing operations','企业团队审视运营','企業團隊檢視營運','Equipo revisando operaciones'),[l('AI & ERP Readiness Assessment','AI 与 ERP 准备度评估','AI 與 ERP 準備度評估','Evaluación IA y ERP'),l('Opportunity Finder','机会查找器','機會查找器','Buscador de oportunidades'),l('Workflow Review','流程审核','流程審核','Revisión de procesos'),l('Private Knowledge AI','私有知识 AI','私有知識 AI','IA privada'),l('ERP Foundation Planner','ERP 基础规划器','ERP 基礎規劃器','Planificador ERP'),l('ROI Calculator','投资回报计算器','投資回報計算器','Calculadora de ROI')],[op('reentry',l('Data is entered in multiple systems','数据重复录入多个系统','資料重複輸入多個系統','Los datos se capturan en varios sistemas'),l('Connected workflow automation','互联流程自动化','互聯流程自動化','Automatización conectada')),op('sops',l('Procedures are difficult to find','程序难以查找','程序難以查找','Los procedimientos son difíciles de encontrar'),l('Private SOP search','私有 SOP 搜索','私有 SOP 搜尋','Búsqueda privada de procedimientos')),op('reports',l('Reporting requires spreadsheets','报告依赖电子表格','報告依賴試算表','Los informes requieren hojas de cálculo'),l('Connected management reporting','互联管理报告','互聯管理報告','Informes de gestión conectados'))],[phase(1,l('Organize data and process ownership','整理数据与流程责任','整理資料與流程責任','Organizar datos y responsables')),phase(2,l('Establish a connected ERP foundation','建立互联 ERP 基础','建立互聯 ERP 基礎','Establecer una base ERP conectada')),phase(3,l('Pilot private company knowledge AI','试点私有企业知识 AI','試行私有企業知識 AI','Probar IA privada de conocimiento')),phase(4,l('Add controlled automation and reporting','增加受控自动化与报告','增加受控自動化與報告','Añadir automatización e informes'))]),
 };
 
-export const industryChoices: IndustryKey[] = ['wholesale','hvac','construction','manufacturing','retail','professional','other'];
+export const industryChoices: IndustryKey[] = ['wholesale','hvac','construction','restaurant','manufacturing','retail','professional','other'];
 export function industryKey(value?: string): IndustryKey {
   const text = String(value ?? '').toLowerCase();
   if (text.includes('wholesale') || text.includes('distribution') || text.includes('批发') || text.includes('批發')) return 'wholesale';
   if (text.includes('hvac') || text.includes('field service') || text.includes('暖通')) return 'hvac';
   if (text.includes('construction') || text.includes('建筑') || text.includes('建築')) return 'construction';
   if (text.includes('manufactur') || text.includes('制造') || text.includes('製造')) return 'manufacturing';
+  if (text.includes('restaurant') || text.includes('餐厅') || text.includes('餐廳') || text.includes('buffet')) return 'restaurant';
   if (text.includes('retail') || text.includes('零售')) return 'retail';
   if (text.includes('professional') || text.includes('service compan') || text.includes('专业服务') || text.includes('專業服務')) return 'professional';
   return 'other';

@@ -14,7 +14,7 @@ const routes = [
   '/resources/industries/manufacturing', '/resources/industries/retail',
   '/resources/industries/professional-services',
 ];
-const authorityRoutes = ['/case-studies','/how-nexavoris-works','/methodology/ai-erp-readiness','/methodology/roi-calculator','/trust','/privacy','/terms'];
+const authorityRoutes = ['/case-studies','/how-nexavoris-works','/methodology/ai-erp-readiness','/methodology/roi-calculator','/trust','/privacy','/terms','/industries/restaurants'];
 const locales = [
   ['en-US', ''], ['zh-CN', '?lang=zh-cn'],
   ['zh-TW', '?lang=zh-tw'], ['es', '?lang=es'],

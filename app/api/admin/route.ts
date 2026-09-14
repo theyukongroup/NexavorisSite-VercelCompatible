@@ -412,6 +412,7 @@ export async function POST(request: Request) {
       'Manufacturing',
       'Retail',
       'Professional Services',
+      'Restaurant',
       'Other',
     ];
     if (!allowed.includes(industry))

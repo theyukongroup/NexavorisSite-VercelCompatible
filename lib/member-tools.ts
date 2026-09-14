@@ -2,7 +2,7 @@ export type Scores = { ai:number; erp:number; automation:number; data:number; ov
 export type AssessmentAnswers = Record<string, number | string>;
 
 export const assessmentQuestions = [
-  { id:'industry', kind:'select', label:'Industry', options:['Wholesale / Distribution','HVAC / Field Service','Construction','Retail','Manufacturing','Professional Services','Other'] },
+  { id:'industry', kind:'select', label:'Industry', options:['Wholesale / Distribution','HVAC / Field Service','Construction','Restaurant','Retail','Manufacturing','Professional Services','Other'] },
   { id:'employees', kind:'select', label:'Number of employees', options:['1–10','11–50','51–200','201–500','500+'] },
   { id:'locations', kind:'select', label:'Number of locations', options:['1','2–3','4–10','11+'] },
   { id:'systems', kind:'scale', label:'How connected are your current business systems?' },

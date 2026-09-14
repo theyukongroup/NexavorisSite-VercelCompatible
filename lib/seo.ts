@@ -36,7 +36,7 @@ export const resourceRoutes = [
 export const authorityRoutes = [
   '/case-studies', '/how-nexavoris-works',
   '/methodology/ai-erp-readiness', '/methodology/roi-calculator',
-  '/trust', '/privacy', '/terms',
+  '/trust', '/privacy', '/terms', '/industries/restaurants',
 ] as const;
 
 export const publicRoutes = [...marketingRoutes, ...resourceRoutes] as const;

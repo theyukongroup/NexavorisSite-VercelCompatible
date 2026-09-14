@@ -21,6 +21,8 @@ const groups = [
   {
     label: 'Industries',
     links: [
+      ['All Industries', '/industries'],
+      ['Restaurants', '/industries/restaurants'],
       [
         'Wholesale Distribution',
         '/resources/industries/wholesale-distribution',

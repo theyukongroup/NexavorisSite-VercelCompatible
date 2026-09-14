@@ -118,6 +118,7 @@ export default function ContactContent({
                 <option>Wholesale / Distribution</option>
                 <option>HVAC / Field Service</option>
                 <option>Construction</option>
+                <option>Restaurant</option>
                 <option>Retail</option>
                 <option>Manufacturing</option>
                 <option>Professional Services</option>
