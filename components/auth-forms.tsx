@@ -158,12 +158,12 @@ export function LoginPanel({
           </label>
           <label>
             {copy.password}
-            <input name="password" type="password" autoComplete="new-password" minLength={10} required />
+            <input name="password" type="password" autoComplete="new-password" minLength={7} required />
             <small>{copy.passwordHint}</small>
           </label>
           <label>
             {copy.confirmPassword}
-            <input name="confirm_password" type="password" autoComplete="new-password" minLength={10} required />
+            <input name="confirm_password" type="password" autoComplete="new-password" minLength={7} required />
           </label>
           <ErrorMessage state={signUpState} />
           <SubmitButton pending={signingUp} label={copy.registerButton} working={copy.working} />
@@ -225,12 +225,12 @@ export function ResetPasswordForm({ copy, locale }: { copy: AuthCopy; locale: Lo
         <Context locale={locale} />
         <label>
           {copy.newPassword}
-          <input name="password" type="password" autoComplete="new-password" minLength={10} required />
+          <input name="password" type="password" autoComplete="new-password" minLength={7} required />
           <small>{copy.passwordHint}</small>
         </label>
         <label>
           {copy.confirmPassword}
-          <input name="confirm_password" type="password" autoComplete="new-password" minLength={10} required />
+          <input name="confirm_password" type="password" autoComplete="new-password" minLength={7} required />
         </label>
         <ErrorMessage state={state} />
         <SubmitButton pending={pending} label={copy.updatePassword} working={copy.working} />

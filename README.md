@@ -111,7 +111,10 @@ tables; if one is missing, database calls fail with the table names.
 
 - Email provider **on**, **Confirm email on**. Admin bootstrap depends on it
   staying on (see divergence 8).
-- Minimum password length **10** (the forms enforce 10 too).
+- Minimum password length **7** — the forms and server actions enforce 7 too
+  (`components/auth-forms.tsx`, `lib/auth-actions.ts`, `lib/auth-copy.ts`);
+  change all four together. If Supabase's setting is higher, sign-ups that pass
+  the form are rejected.
 - JWT signing keys: **asymmetric** (the default for new projects), so session
   checks verify locally instead of calling Supabase on every page view.
 - **Site URL:** `https://nexavoris.ai` once the domain is live (the Vercel URL

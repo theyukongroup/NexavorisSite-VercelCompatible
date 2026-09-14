@@ -18,7 +18,9 @@ export type AuthState = {
   resend?: boolean;
 };
 
-const MIN_PASSWORD_LENGTH = 10;
+// Keep in step with components/auth-forms.tsx (minLength), lib/auth-copy.ts
+// (hint and error text) and Supabase Auth's minimum password length setting.
+const MIN_PASSWORD_LENGTH = 7;
 const field = (form: FormData, name: string) => String(form.get(name) ?? '').trim();
 const secret = (form: FormData, name: string) => String(form.get(name) ?? '');
 const validEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
