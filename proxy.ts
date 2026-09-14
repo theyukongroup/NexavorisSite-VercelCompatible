@@ -69,10 +69,15 @@ const sitesIdentityHeaders = [
 ];
 
 function fromAnotherSite(request: NextRequest) {
+  // Every current browser sends Sec-Fetch-Site; trust it when present.
   const site = request.headers.get('sec-fetch-site');
-  if (site === 'cross-site' || site === 'same-site') return true;
+  if (site) return site !== 'same-origin' && site !== 'none';
+  // Older browsers: compare Origin with Host. Pages with a no-referrer policy
+  // (the auth, account and admin layouts) send `Origin: null` on same-origin
+  // POSTs, so null is not treated as foreign; SameSite=Lax session cookies
+  // already keep cross-site requests unauthenticated.
   const origin = request.headers.get('origin');
-  if (!origin) return false;
+  if (!origin || origin === 'null') return false;
   try {
     return new URL(origin).host !== request.headers.get('host');
   } catch {
