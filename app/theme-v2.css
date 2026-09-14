@@ -58,6 +58,18 @@ header {
 nav {
   gap: 28px;
 }
+.desktop-navigation {
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.desktop-navigation > a,
+.desktop-navigation > .nav-dropdown > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
 nav a {
   color: #46534f;
   font-size: 12px;
@@ -67,7 +79,7 @@ nav a {
 nav a:hover {
   color: #1f5c4d;
 }
-.nav-dropdown{position:relative;display:flex;align-items:center;height:82px}.nav-dropdown-menu{position:absolute;top:calc(100% - 1px);left:-18px;min-width:190px;padding:8px;background:#fffefa;border:1px solid #c9cec7;box-shadow:0 14px 28px rgba(23,34,39,.12);display:none}.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{display:grid}.nav-dropdown-menu a{padding:10px 12px;font-size:13px;white-space:nowrap}.nav-dropdown-menu a:hover,.nav-dropdown-menu a:focus-visible{background:#e8eee9;color:#1f5c4d;outline:none}
+.nav-dropdown{position:relative;display:flex;align-items:center;height:82px}.nav-dropdown-menu{position:absolute;top:calc(100% - 1px);left:-18px;min-width:250px;padding:8px;background:#fffefa;border:1px solid #c9cec7;box-shadow:0 14px 28px rgba(23,34,39,.12);display:none}.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu{display:grid}.nav-dropdown-menu a{padding:9px 12px;font-size:13px;white-space:nowrap}.nav-dropdown-menu a:hover,.nav-dropdown-menu a:focus-visible{background:#e8eee9;color:#1f5c4d;outline:none}
 .language-selector {
   display: flex;
   align-items: center;
@@ -470,30 +482,30 @@ html[lang='zh-TW'] h2 {
   background: #e5e4dc;
   border-color: #c9cec7;
 }
-.pricing .pricing-grid article {
+.pricing-grid article {
   background: #fffefa;
   border-color: #bfc7c0;
   box-shadow: none;
 }
-.pricing .pricing-grid article.featured {
+.pricing-grid article.featured {
   border: 1px solid #1f5c4d;
   box-shadow: 8px 8px 0 #1f5c4d;
 }
-.pricing .popular {
+.popular {
   color: #a24e31;
 }
-.pricing .pricing-grid article > p,
-.pricing .pricing-grid li,
-.pricing .pricing-note {
+.pricing-grid article > p,
+.pricing-grid li,
+.pricing-note {
   color: #5d6965;
 }
-.pricing .price {
+.price {
   border-color: #d2d6d0;
 }
-.pricing .price small {
+.price small {
   color: #6e7974;
 }
-.pricing .pricing-grid li svg {
+.pricing-grid li svg {
   color: #1f5c4d;
 }
 .website-preview {

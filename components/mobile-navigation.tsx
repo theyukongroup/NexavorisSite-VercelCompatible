@@ -22,16 +22,16 @@ const groups = [
     label: 'Industries',
     links: [
       ['All Industries', '/industries'],
-      ['Restaurants', '/industries/restaurants'],
       [
         'Wholesale Distribution',
         '/resources/industries/wholesale-distribution',
       ],
       ['HVAC & Field Service', '/resources/industries/hvac-field-service'],
       ['Construction', '/resources/industries/construction'],
-      ['Manufacturing', '/resources/industries/manufacturing'],
       ['Retail', '/resources/industries/retail'],
+      ['Manufacturing', '/resources/industries/manufacturing'],
       ['Professional Services', '/resources/industries/professional-services'],
+      ['Restaurant', '/industries/restaurants'],
     ],
   },
   {

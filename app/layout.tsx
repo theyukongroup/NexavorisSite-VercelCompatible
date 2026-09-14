@@ -21,7 +21,6 @@ import './about.css';
 import './resources.css';
 import './authority.css';
 import './member.css';
-import './fixes.css';
 import './restaurants.css';
 
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
@@ -123,7 +122,13 @@ export default async function RootLayout({
                 <a href={href} aria-haspopup="true">{label}</a>
                 <div className="nav-dropdown-menu">
                   <a href="/industries">All Industries</a>
-                  <a href="/industries/restaurants">Restaurants</a>
+                  <a href="/resources/industries/wholesale-distribution">Wholesale &amp; Distribution</a>
+                  <a href="/resources/industries/hvac-field-service">HVAC &amp; Field Service</a>
+                  <a href="/resources/industries/construction">Construction</a>
+                  <a href="/resources/industries/retail">Retail</a>
+                  <a href="/resources/industries/manufacturing">Manufacturing</a>
+                  <a href="/resources/industries/professional-services">Professional Services</a>
+                  <a href="/industries/restaurants">Restaurant</a>
                 </div>
               </div>
             ) : <a key={label} href={href}>{label}</a>)}

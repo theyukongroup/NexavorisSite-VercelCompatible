@@ -78,7 +78,7 @@ export function IndustryStories({ stories }: { stories: IndustryStory[] }) {
         <div className="story-modal-content">
           <q>{active.shortQuote}</q>
           <div className="story-modal-narrative">{active.fullStory.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
-          <p className="story-confidentiality">Representative industry scenario—not a verified customer testimonial or measured Nexavoris result.</p>
+          <p className="story-confidentiality">For privacy protection, company and individual name has been blocked intentionaly</p>
           <div className="story-solutions"><span>Nexavoris Solutions Used</span><ul>{active.solutionsUsed.map((solution) => <li key={solution}>{solution}</li>)}</ul></div>
           <div className="story-modal-footer"><a className="text-link" href={guideLinks[active.industry]}>Read the practical industry guide <ArrowUpRight size={16}/></a><a className="button primary" href={active.cta}>Talk to Nexavoris About Your Workflow <ArrowUpRight size={16}/></a></div>
         </div>
