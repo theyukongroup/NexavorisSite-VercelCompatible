@@ -19,22 +19,6 @@ const groups = [
     ],
   },
   {
-    label: 'Industries',
-    links: [
-      ['All Industries', '/industries'],
-      [
-        'Wholesale Distribution',
-        '/resources/industries/wholesale-distribution',
-      ],
-      ['HVAC & Field Service', '/resources/industries/hvac-field-service'],
-      ['Construction', '/resources/industries/construction'],
-      ['Retail', '/resources/industries/retail'],
-      ['Manufacturing', '/resources/industries/manufacturing'],
-      ['Professional Services', '/resources/industries/professional-services'],
-      ['Restaurant', '/industries/restaurants'],
-    ],
-  },
-  {
     label: 'Resources',
     links: [
       ['All Guides', '/resources'],
@@ -138,6 +122,7 @@ export function MobileNavigation({ signedIn, accountHref }: Props) {
                   </div>
                 </details>
               ))}
+              <a href="/industries">Industries</a>
               <a href="/pricing">Pricing</a>
               <a href="/about">About</a>
               <a href="/contact">Contact</a>
