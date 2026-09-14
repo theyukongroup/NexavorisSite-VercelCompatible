@@ -44,19 +44,53 @@ function routeKey(slug?: string[]) {
   return slug?.join('/') || '';
 }
 
-function localizeValue(value: unknown, messages: Record<string, string>): unknown {
+const structuralProps = new Set([
+  'action',
+  'className',
+  'href',
+  'id',
+  'key',
+  'method',
+  'name',
+  'rel',
+  'src',
+  'srcSet',
+  'style',
+  'target',
+  'type',
+]);
+
+function localizeValue(
+  value: unknown,
+  messages: Record<string, string>,
+  property?: string,
+): unknown {
+  if (structuralProps.has(property ?? '')) return value;
   if (typeof value === 'string') {
     const trimmed = value.trim();
     return trimmed ? value.replace(trimmed, translate(messages, trimmed)) : value;
   }
-  if (Array.isArray(value)) return value.map((item) => localizeValue(item, messages));
+  if (Array.isArray(value))
+    return value.map((item) => localizeValue(item, messages, property));
   if (isValidElement(value)) {
-    const props = localizeValue(value.props, messages) as Record<string, unknown>;
+    const props = Object.fromEntries(
+      Object.entries(value.props as Record<string, unknown>).map(([key, item]) => [
+        key,
+        localizeValue(item, messages, key),
+      ]),
+    );
     return cloneElement(value, props);
   }
-  if (value && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
+  if (
+    value &&
+    typeof value === 'object' &&
+    Object.getPrototypeOf(value) === Object.prototype
+  ) {
     return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, localizeValue(item, messages)]),
+      Object.entries(value).map(([key, item]) => [
+        key,
+        localizeValue(item, messages, key),
+      ]),
     );
   }
   return value;
