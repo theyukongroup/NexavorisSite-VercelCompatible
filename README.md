@@ -116,8 +116,10 @@ tables; if one is missing, database calls fail with the table names.
   checks verify locally instead of calling Supabase on every page view.
 - **Site URL:** `https://nexavoris.ai` once the domain is live (the Vercel URL
   while testing).
-- **Redirect URLs** allowlist: `https://nexavoris.ai/**`,
-  `https://*-<vercel-team>.vercel.app/**`, `http://localhost:3000/**`. If a
+- **Redirect URLs** allowlist: `https://nexavoris.ai/**`, the project's
+  production `*.vercel.app` address with `/**`, `https://*-nexavoris.vercel.app/**`
+  (preview deployments; the Vercel team is `nexavoris`, project
+  `nexavoris-site-vercel-compatible`), and `http://localhost:3000/**`. If a
   link's host is not on this list, Supabase silently substitutes the Site URL
   and the email link breaks.
 - **Rate limits:** raise "sign-ups and sign-ins". Sign-in runs in server actions,
